@@ -11,6 +11,7 @@ import {
   Clock,
   Coffee,
 } from "lucide-react";
+import SessionStat from "./components/session_stats";
 
 export default function DashboardSaludOcupacional() {
   const [datosSensores, setDatosSensores] = useState({
@@ -19,7 +20,7 @@ export default function DashboardSaludOcupacional() {
     temperatura: 23,
   });
 
-  const [estadoFatiga, setEstadoFatiga] = useState({
+  const [estadoFatiga] = useState({
     visual: "bajo",
     postural: "bajo",
     cognitiva: "bajo",
@@ -111,41 +112,23 @@ export default function DashboardSaludOcupacional() {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Session Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="border border-border rounded-lg p-6 bg-card">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs uppercase tracking-wider text-muted-foreground font-medium">
-                Estado
-              </span>
-              <Activity className="w-4 h-4 text-muted-foreground" />
-            </div>
-            <p className="text-3xl font-semibold text-foreground tabular-nums">
-              {sesionActual.activa ? "Activa" : "Finalizada"}
-            </p>
-          </div>
+          <SessionStat
+            label="Estado"
+            icon={Activity}
+            value={sesionActual.activa ? "Activa" : "Finalizada"}
+          />
 
-          <div className="border border-border rounded-lg p-6 bg-card">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs uppercase tracking-wider text-muted-foreground font-medium">
-                Tiempo
-              </span>
-              <Clock className="w-4 h-4 text-muted-foreground" />
-            </div>
-            <p className="text-3xl font-semibold text-foreground tabular-nums">
-              {sesionActual.minutosTranscurridos} min
-            </p>
-          </div>
+          <SessionStat
+            label="Tiempo"
+            icon={Clock}
+            value={`${sesionActual.minutosTranscurridos} min`}
+          />
 
-          <div className="border border-border rounded-lg p-6 bg-card">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs uppercase tracking-wider text-muted-foreground font-medium">
-                Pausas
-              </span>
-              <Coffee className="w-4 h-4 text-muted-foreground" />
-            </div>
-            <p className="text-3xl font-semibold text-foreground tabular-nums">
-              {sesionActual.pausasTomadas}
-            </p>
-          </div>
+          <SessionStat
+            label="Pausas"
+            icon={Coffee}
+            value={sesionActual.pausasTomadas}
+          />
         </div>
 
         {/* Main Grid */}
@@ -184,13 +167,12 @@ export default function DashboardSaludOcupacional() {
                 </div>
                 <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                   <div
-                    className={`h-full transition-all duration-500 ${
-                      datosSensores.co2 < 800
-                        ? "bg-emerald-500"
-                        : datosSensores.co2 < 1000
+                    className={`h-full transition-all duration-500 ${datosSensores.co2 < 800
+                      ? "bg-emerald-500"
+                      : datosSensores.co2 < 1000
                         ? "bg-amber-500"
                         : "bg-red-500"
-                    }`}
+                      }`}
                     style={{
                       width: `${Math.min(
                         (datosSensores.co2 / 2000) * 100,
@@ -234,13 +216,12 @@ export default function DashboardSaludOcupacional() {
                 </div>
                 <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                   <div
-                    className={`h-full transition-all duration-500 ${
-                      datosSensores.ruido < 50
-                        ? "bg-emerald-500"
-                        : datosSensores.ruido < 65
+                    className={`h-full transition-all duration-500 ${datosSensores.ruido < 50
+                      ? "bg-emerald-500"
+                      : datosSensores.ruido < 65
                         ? "bg-amber-500"
                         : "bg-red-500"
-                    }`}
+                      }`}
                     style={{ width: `${(datosSensores.ruido / 100) * 100}%` }}
                   />
                 </div>
@@ -486,26 +467,23 @@ export default function DashboardSaludOcupacional() {
             <div className="border border-border rounded-lg p-6 bg-card">
               <div className="flex flex-col items-center text-center">
                 <div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 ${
-                    datosSensores.co2 > 1200 ? "bg-blue-500/10" : "bg-muted"
-                  }`}>
+                  className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 ${datosSensores.co2 > 1200 ? "bg-blue-500/10" : "bg-muted"
+                    }`}>
                   <Wind
-                    className={`w-6 h-6 ${
-                      datosSensores.co2 > 1200
-                        ? "text-blue-500"
-                        : "text-muted-foreground"
-                    }`}
+                    className={`w-6 h-6 ${datosSensores.co2 > 1200
+                      ? "text-blue-500"
+                      : "text-muted-foreground"
+                      }`}
                   />
                 </div>
                 <p className="text-sm font-medium text-foreground mb-1">
                   Ventilador
                 </p>
                 <p
-                  className={`text-xs font-mono ${
-                    datosSensores.co2 > 1200
-                      ? "text-blue-500"
-                      : "text-muted-foreground"
-                  }`}>
+                  className={`text-xs font-mono ${datosSensores.co2 > 1200
+                    ? "text-blue-500"
+                    : "text-muted-foreground"
+                    }`}>
                   {datosSensores.co2 > 1200 ? "ENCENDIDO" : "APAGADO"}
                 </p>
               </div>
@@ -515,11 +493,10 @@ export default function DashboardSaludOcupacional() {
             <div className="border border-border rounded-lg p-6 bg-card">
               <div className="flex flex-col items-center text-center">
                 <div
-                  className={`w-12 h-12 rounded-full mb-3 ${
-                    datosSensores.co2 < 800 && datosSensores.ruido < 50
-                      ? "bg-emerald-500 shadow-lg shadow-emerald-500/50"
-                      : "bg-muted"
-                  }`}
+                  className={`w-12 h-12 rounded-full mb-3 ${datosSensores.co2 < 800 && datosSensores.ruido < 50
+                    ? "bg-emerald-500 shadow-lg shadow-emerald-500/50"
+                    : "bg-muted"
+                    }`}
                 />
                 <p className="text-sm font-medium text-foreground mb-1">
                   LED Verde
@@ -532,12 +509,11 @@ export default function DashboardSaludOcupacional() {
             <div className="border border-border rounded-lg p-6 bg-card">
               <div className="flex flex-col items-center text-center">
                 <div
-                  className={`w-12 h-12 rounded-full mb-3 ${
-                    (datosSensores.co2 >= 800 && datosSensores.co2 < 1200) ||
+                  className={`w-12 h-12 rounded-full mb-3 ${(datosSensores.co2 >= 800 && datosSensores.co2 < 1200) ||
                     (datosSensores.ruido >= 50 && datosSensores.ruido < 70)
-                      ? "bg-amber-500 shadow-lg shadow-amber-500/50"
-                      : "bg-muted"
-                  }`}
+                    ? "bg-amber-500 shadow-lg shadow-amber-500/50"
+                    : "bg-muted"
+                    }`}
                 />
                 <p className="text-sm font-medium text-foreground mb-1">
                   LED Amarillo
@@ -550,11 +526,10 @@ export default function DashboardSaludOcupacional() {
             <div className="border border-border rounded-lg p-6 bg-card">
               <div className="flex flex-col items-center text-center">
                 <div
-                  className={`w-12 h-12 rounded-full mb-3 ${
-                    datosSensores.co2 >= 1200 || datosSensores.ruido >= 70
-                      ? "bg-red-500 shadow-lg shadow-red-500/50 animate-pulse"
-                      : "bg-muted"
-                  }`}
+                  className={`w-12 h-12 rounded-full mb-3 ${datosSensores.co2 >= 1200 || datosSensores.ruido >= 70
+                    ? "bg-red-500 shadow-lg shadow-red-500/50 animate-pulse"
+                    : "bg-muted"
+                    }`}
                 />
                 <p className="text-sm font-medium text-foreground mb-1">
                   LED Rojo
